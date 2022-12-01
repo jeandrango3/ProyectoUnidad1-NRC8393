@@ -20,8 +20,8 @@ num_usuarios = 5000
 features = [
     "id_Agencia",
     "Nombre_Agencia",
-    "Status_Agencia"
-    "Telefono_Agencia"
+    "Status_Agencia",
+    "Telefono_Agencia",
     "Correo_Agencia",
    
 ]# Creating a DF for these features
