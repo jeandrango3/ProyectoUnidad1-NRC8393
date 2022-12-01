@@ -9,10 +9,15 @@ Original file is located at
 #Instalamos las librerias necesarias para crear datos sintecticos 
 #la mas importante faker
 !pip install Faker
+#Pandas nos va a servir para crear dataframes
 import pandas as pd
+#Crea cadenas de caracteres aleatorias
 import uuid
+#Crea datos random 
 import random
+#Libreria creadora de datos falsos 
 from faker import Faker
+#Nos ayuda a poder manipular datos de fecha y hora 
 import datetime
 
 #Declaramos una variable que va a almacenar la cantidad de datos que deseamos crear 
