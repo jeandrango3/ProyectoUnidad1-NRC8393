@@ -7,16 +7,24 @@ Original file is located at
     https://colab.research.google.com/drive/1bjQUw2yuiRdxvB94TewMQGaMuB4A08yH
 """
 
+#Instalamos las librerias necesarias para crear datos sintecticos 
+#la mas importante faker
 !pip install Faker
+#Pandas nos va a servir para crear dataframes
 import pandas as pd
+#Crea cadenas de caracteres aleatorias
 import uuid
+#Crea datos random 
 import random
+#Libreria creadora de datos falsos 
 from faker import Faker
+#Nos ayuda a poder manipular datos de fecha y hora 
 import datetime
 
+#Variable que almacena el numero de usuarios
 num_usuarios = 5000
 
-# A list of 10 features
+# Lista de atributos
 features = [
     "id_Empleado",
     "Nombre_Empleado",
@@ -26,14 +34,17 @@ features = [
     "Edad_Empleado",
     "Status_Empleado" 
 
-]# Creating a DF for these features
+]
+# Crea el dtaframe con los atributos en columnas
 df = pd.DataFrame(columns=features)
 
+#Crea cadena de datos aleatoria
 df['id_Empleado'] = [uuid.uuid4().hex for i in range(num_usuarios)]
 
+#Verifica que los id sean unicos 
 print(df['id_Empleado'].nunique()==num_usuarios)
 
-#Al ser un proyecto basado en el estado unicamente receptaremos datos de genero binario
+#Al ser un proyecto basado en el estado ecuatoriano unicamente receptaremos datos de genero binario
 generos = ["Masculino", "Femenino"]
 
 df['Genero_Empleado'] = random.choices(
@@ -42,11 +53,20 @@ df['Genero_Empleado'] = random.choices(
     k=num_usuarios
 )
 
+
 faker = Faker()
 
 def name_gen(gender):
     """
-    Quickly generates a name based on gender
+  Generamos datos de manera aletoria
+  
+  Parametros
+  gender = dato caracteristico
+  
+  return
+  
+  fake.name()
+ 
     """
     if gender=='Masculino':
         return faker.name_male()
@@ -56,11 +76,23 @@ def name_gen(gender):
     return faker.name()# Generating names for each user
 df['Nombre_Empleado'] = [name_gen(i) for i in df['Genero_Empleado']]
 
+#Utilizamos faker.sentence para crea una descripcion falsa 
 df['Descripcion_Empleado']=[faker.sentence() for i in range(num_usuarios)]
+
 
 def random_dob(start, end, n):
     """
-    Generating a list of a set number of timestamps
+    Genera fechas de nacimiento aleatorios definimos rango y el numero de datos    
+    
+    parametros 
+    
+    frmt= el formato en el que se va a presentar la fecha 
+    stime= inicio de las fechas 
+    stime= fin de las fechas 
+    
+    return
+    
+    times = fechas 
     """
     
     # The timestamp format
@@ -81,7 +113,17 @@ def random_dob(start, end, n):
 df['Fecha_Nacimiento'] = random_dob("1960-01-01", "2000-01-01", num_usuarios)
 
 def getEdad(Fecha_Nacimiento):
+    """
+    Genera edad a traves de la fecha de nacimiento creada anteriomente 
     
+    parametros 
+    now = fecha actual 
+    dob= fecha de nacimiento 
+    age=  formula para calcular la edad 
+    
+    return 
+    age= edad
+    """
     # Current date
     now = datetime.datetime.now()
     
@@ -95,8 +137,10 @@ def getEdad(Fecha_Nacimiento):
 
 df['Edad_Empleado'] = [getEdad(i)  for i in df['Fecha_Nacimiento']]
 
+#definimos una lista de opciones 
 Status= ["Aceptado", "Rechazado", "Pendiente"]
 
 df['Status_Empleado'] = random.choices(Status, weights=(3000,1000,1000), k=num_usuarios)
 
+#Creamos un documento donde se va a almacenar todos los datos 
 df.to_csv('Empleados_usuarios.csv')
