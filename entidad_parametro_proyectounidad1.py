@@ -22,7 +22,7 @@ import datetime
 #Se declara y se define la cantidad de datos que deseemos crear
 num_usuarios = 5000
 
-# Creamos una lista con atributos 
+# Creamos una lista con atributos de nuestra entidad 
 features = [
     "id_Parametro",
     "Nombre_Parametro",
@@ -45,6 +45,7 @@ parametros = ["Credito de desarrollo humano ","Bono de desarrollo humano",]
 
 df['Nombre_Parametro'] = random.choices(parametros, weights=(3000,2000), k=num_usuarios)
 
+#Inicalizamos la función faker
 faker = Faker()
 df['Descripcion_Parametro']=[faker.sentence() for i in range(num_usuarios)]
 
@@ -54,20 +55,23 @@ df['Base_Legal_Parametro'] = random.choices( Base,  weights=(3500, 1500), k=num_
 
 def declaracion(start, end, n):
     """
-    Generating a list of a set number of timestamps
+    Declaramos el inici y fin de las fechas 
+    
+    return 
+     times
     """
     
-    # The timestamp format
+    # El formato de la fecha 
     frmt = "%Y-%m-%d"
     
-    # Formatting the two time periods
+    # Formato de los periodos
     stime = datetime.datetime.strptime(start, frmt)
     etime = datetime.datetime.strptime(end, frmt)
     
-    # Creating the pool for random times
+   
     td = etime - stime
     
-    # Generating a list with the random times
+  
     times = [(random.random() * td + stime).strftime(frmt) for _ in range(n)]
     
     return times
@@ -76,7 +80,11 @@ df['Fecha_Declaracion_Parametro'] = declaracion("2001-01-01", "2013-01-01", num_
 
 def Derrogacion(start, end, n):
     """
-    Generating a list of a set number of timestamps
+    Definimos el rango de las fechas inicio y fin 
+    
+    return
+    
+    times
     """
     
     # Se define el formato de la fechaa
@@ -86,14 +94,15 @@ def Derrogacion(start, end, n):
     stime = datetime.datetime.strptime(start, frmt)
     etime = datetime.datetime.strptime(end, frmt)
     
-    # Creating the pool for random times
+   
     td = etime - stime
     
-    # Generating a list with the random times
+   
     times = [(random.random() * td + stime).strftime(frmt) for _ in range(n)]
     
     return times
 
 df['Fecha_Derrogacion_Parametro'] = Derrogacion("2013-01-01", "2022-01-01", num_usuarios)
 
+#Definimos el archivo donde se van a almacen nuestros datos 
 df.to_csv('Parametros.csv')
